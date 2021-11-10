@@ -25,15 +25,19 @@ import {
 } from "react-router-dom";
 import DashboardHome from '../DashboardHome/DashboardHome';
 import MakeAdmin from '../MakeAdmin/MakeAdmin';
+import useAuth from '../../../hooks/useAuth';
+import AdminRoute from '../../Login/AdminRoute/AdminRoute';
 
 const drawerWidth = 240;
 
 function Dashboard(props) {
+
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
+    const { admin } = useAuth();
     let { path, url } = useRouteMatch();
-   
+
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -44,12 +48,18 @@ function Dashboard(props) {
             <Toolbar />
 
             <Divider />
-            <Link  to='/appointment' style={{ textDecoration: 'none', color: 'blue' }}>
+            <Link to='/appointment' style={{ textDecoration: 'none', color: 'blue' }}>
                 <Button color="inherit">Appointment</Button>
             </Link> <br />
-            <Link to={`${url}/makeAdmin`}><Button color="inherit">Make Admin</Button></Link>
-                <br />
-                <Link to={`${url}`}><Button color="inherit">Dashboard</Button></Link>
+            {
+                admin && <Box>
+
+                    <Link to={`${url}/makeAdmin`}><Button color="inherit">Make Admin</Button></Link>
+                    <br />
+
+                </Box>
+            }
+            <Link to={`${url}`}><Button color="inherit">Dashboard</Button></Link>
             <List>
                 {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                     <ListItem button key={text}>
@@ -132,15 +142,15 @@ function Dashboard(props) {
                     <Route exact path={`${path}`}>
                         <DashboardHome></DashboardHome>
                     </Route>
-                    <Route path={`${path}/makeAdmin`}>
+                    <AdminRoute path={`${path}/makeAdmin`}>
                         <MakeAdmin></MakeAdmin>
-                    </Route>
-                   
+                    </AdminRoute>
+
                 </Switch>
 
-                   
 
-               
+
+
 
             </Box>
         </Box>
