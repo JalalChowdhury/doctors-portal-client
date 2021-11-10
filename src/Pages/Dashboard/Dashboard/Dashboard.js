@@ -15,10 +15,16 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Button, Grid } from '@mui/material';
-import Calender from '../../Shared/Calendar/Calender';
-import AppointmentsList from '../AppointmentsList/AppointmentsList';
-import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
+
+import {
+    Switch,
+    Route,
+    Link,
+    useRouteMatch
+} from "react-router-dom";
+import DashboardHome from '../DashboardHome/DashboardHome';
+import MakeAdmin from '../MakeAdmin/MakeAdmin';
 
 const drawerWidth = 240;
 
@@ -26,7 +32,8 @@ function Dashboard(props) {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
-    const [date, setDate] = React.useState(new Date());
+    let { path, url } = useRouteMatch();
+   
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -39,7 +46,10 @@ function Dashboard(props) {
             <Divider />
             <Link  to='/appointment' style={{ textDecoration: 'none', color: 'blue' }}>
                 <Button color="inherit">Appointment</Button>
-            </Link>
+            </Link> <br />
+            <Link to={`${url}/makeAdmin`}><Button color="inherit">Make Admin</Button></Link>
+                <br />
+                <Link to={`${url}`}><Button color="inherit">Dashboard</Button></Link>
             <List>
                 {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
                     <ListItem button key={text}>
@@ -118,24 +128,19 @@ function Dashboard(props) {
                 sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
             >
                 <Toolbar />
-                <Typography paragraph>
+                <Switch>
+                    <Route exact path={`${path}`}>
+                        <DashboardHome></DashboardHome>
+                    </Route>
+                    <Route path={`${path}/makeAdmin`}>
+                        <MakeAdmin></MakeAdmin>
+                    </Route>
+                   
+                </Switch>
 
-                    <Grid container spacing={2}>
-                        <Grid item sm={12} md={6}>
-                            <Calender
-                                date={date}
-                                setDate={setDate}
-                            ></Calender>
-                        </Grid>
-                        <Grid item sm={12} md={6}>
-                            <AppointmentsList
-                                date={date}
-                            ></AppointmentsList>
-                        </Grid>
+                   
 
-                    </Grid>
-
-                </Typography>
+               
 
             </Box>
         </Box>

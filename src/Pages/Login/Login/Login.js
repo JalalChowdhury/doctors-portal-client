@@ -8,8 +8,11 @@ const Login = () => {
     const [loginData, setLoginData] = useState({});
     const {user, loginUser, isLoading,authError, signInWithGoogle} = useAuth();
 
+    // redirect
     const location = useLocation();
     const history = useHistory();
+    // const url = location.state?.from || "/home";
+
     //in value
     const handleOnChange = e => {
         const field = e.target.name;
@@ -31,6 +34,20 @@ const Login = () => {
     // google sign in
     const handleGoogleSignIn = () =>{
         signInWithGoogle(location, history);
+
+        // //
+        // signInWithGoogle()
+        // .then((res) => {
+        //     setIsLoading(true);
+        //     setAuthError('');
+        //     setUser(res.user);
+        //     history.push(url);
+        // }
+        // )
+        // .catch((err) =>  setAuthError(err.message))
+        // .finally(() => {
+        //     setIsLoading(false)
+        // })
     }
 
 
@@ -75,7 +92,7 @@ const Login = () => {
                             <Button variant="text">New User? Please register</Button>
                         </NavLink>
                         <br />
-                        <Button  onChange={handleGoogleSignIn} variant="contained">Google Sign in</Button>
+                        <Button  onClick={handleGoogleSignIn} variant="contained">Google Sign in</Button>
 
                     </form>
                     }
